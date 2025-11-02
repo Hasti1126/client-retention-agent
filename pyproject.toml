@@ -1,0 +1,19 @@
+[project]
+name = "churnapi"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aws-opentelemetry-distro>=0.12.2",
+    "bedrock-agentcore-starter-toolkit>=0.1.28",
+    "boto3>=1.40.64",
+    "fastapi>=0.120.4",
+    "numpy>=2.3.4",
+    "pydantic>=2.12.3",
+    "requests>=2.32.5",
+    "scikit-learn>=1.7.2",
+    "strands-agents>=1.14.0",
+    "streamlit>=1.51.0",
+    "uvicorn>=0.38.0",
+]

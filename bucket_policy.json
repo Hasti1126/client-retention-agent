@@ -1,0 +1,19 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::603478816537:role/AmazonBedrockAgentCoreSDKRuntime-us-east-2-332c3f28d6"
+      },
+      "Action": [
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::msp-churn-models",
+        "arn:aws:s3:::msp-churn-models/*"
+      ]
+    }
+  ]
+}

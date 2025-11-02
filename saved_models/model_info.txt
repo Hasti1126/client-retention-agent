@@ -1,0 +1,10 @@
+Model Training Information
+============================================================
+Date: 2025-11-02 11:11:17.992973
+Training Samples: 4000
+Test Samples: 1000
+Accuracy: 0.8380
+Churn Detection Rate: 0.8434
+Model Type: GradientBoostingClassifier
+Features: ['communication_sentiment', 'ticket_frequency_trend', 'payment_timeliness', 'service_utilization', 'contract_value_trend', 'response_satisfaction', 'escalation_frequency', 'contact_engagement']
+Class Weights: Applied (balanced)

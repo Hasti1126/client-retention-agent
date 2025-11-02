@@ -1,0 +1,44 @@
+default_agent: agent_entry
+agents:
+  agent_entry:
+    name: agent_entry
+    entrypoint: C:/Users/hasti/Downloads/Hack2Skill/churnAPI/agent_entry.py
+    platform: linux/arm64
+    container_runtime: none
+    source_path: C:\Users\hasti\Downloads\Hack2Skill\churnAPI
+    aws:
+      execution_role: arn:aws:iam::603478816537:role/AmazonBedrockAgentCoreSDKRuntime-us-east-2-332c3f28d6
+      execution_role_auto_create: false
+      account: '603478816537'
+      region: us-east-2
+      ecr_repository: 603478816537.dkr.ecr.us-east-2.amazonaws.com/bedrock-agentcore-agent_entry
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+        network_mode_config: null
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+      lifecycle_configuration:
+        idle_runtime_session_timeout: null
+        max_lifetime: null
+    bedrock_agentcore:
+      agent_id: null
+      agent_arn: null
+      agent_session_id: null
+    codebuild:
+      project_name: null
+      execution_role: null
+      source_bucket: null
+    memory:
+      mode: STM_ONLY
+      memory_id: agent_entry_mem-v4yjvBEVpg
+      memory_arn: arn:aws:bedrock-agentcore:us-east-2:603478816537:memory/agent_entry_mem-v4yjvBEVpg
+      memory_name: agent_entry_mem
+      event_expiry_days: 30
+      first_invoke_memory_check_done: true
+      was_created_by_toolkit: true
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null
