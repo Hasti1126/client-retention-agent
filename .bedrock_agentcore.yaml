@@ -1,17 +1,17 @@
-default_agent: agent_entry
+default_agent: server
 agents:
-  agent_entry:
-    name: agent_entry
-    entrypoint: C:/Users/hasti/Downloads/Hack2Skill/churnAPI/agent_entry.py
+  server:
+    name: server
+    entrypoint: C:/Users/hasti/Downloads/Hack2Skill/churnAPI/server.py
     platform: linux/arm64
     container_runtime: none
     source_path: C:\Users\hasti\Downloads\Hack2Skill\churnAPI
     aws:
-      execution_role: arn:aws:iam::603478816537:role/AmazonBedrockAgentCoreSDKRuntime-us-east-2-332c3f28d6
+      execution_role: arn:aws:iam::603478816537:role/AmazonBedrockAgentCoreSDKRuntime-us-east-2-b3eacd3343
       execution_role_auto_create: false
       account: '603478816537'
       region: us-east-2
-      ecr_repository: 603478816537.dkr.ecr.us-east-2.amazonaws.com/bedrock-agentcore-agent_entry
+      ecr_repository: 603478816537.dkr.ecr.us-east-2.amazonaws.com/bedrock-agentcore-server
       ecr_auto_create: false
       network_configuration:
         network_mode: PUBLIC
@@ -24,21 +24,21 @@ agents:
         idle_runtime_session_timeout: null
         max_lifetime: null
     bedrock_agentcore:
-      agent_id: null
-      agent_arn: null
-      agent_session_id: null
+      agent_id: server-5e7mJC4MRL
+      agent_arn: arn:aws:bedrock-agentcore:us-east-2:603478816537:runtime/server-5e7mJC4MRL
+      agent_session_id: 4575ad0e-32bf-4153-ad0c-38e17610cd56
     codebuild:
-      project_name: null
-      execution_role: null
-      source_bucket: null
+      project_name: bedrock-agentcore-server-builder
+      execution_role: arn:aws:iam::603478816537:role/AmazonBedrockAgentCoreSDKCodeBuild-us-east-2-b3eacd3343
+      source_bucket: bedrock-agentcore-codebuild-sources-603478816537-us-east-2
     memory:
       mode: STM_ONLY
-      memory_id: agent_entry_mem-v4yjvBEVpg
-      memory_arn: arn:aws:bedrock-agentcore:us-east-2:603478816537:memory/agent_entry_mem-v4yjvBEVpg
-      memory_name: agent_entry_mem
+      memory_id: server_mem-ip7VTo5TQx
+      memory_arn: arn:aws:bedrock-agentcore:us-east-2:603478816537:memory/server_mem-ip7VTo5TQx
+      memory_name: server_mem
       event_expiry_days: 30
       first_invoke_memory_check_done: true
-      was_created_by_toolkit: true
+      was_created_by_toolkit: false
     authorizer_configuration: null
     request_header_configuration: null
     oauth_configuration: null

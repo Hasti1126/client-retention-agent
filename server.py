@@ -1,60 +1,62 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from typing import Dict, Any
-from datetime import datetime, timezone
-from agent import agent
+from fastapi import FastAPI
+import os
 import json
+from datetime import datetime, timezone
 
-app = FastAPI(
-    title="Client Retention Agent Server",
-    version="1.0.0",
-    description="AI-Powered Client Retention & Growth Engine"
-)
+os.environ['USE_S3_MODELS'] = 'true'
+os.environ['MODEL_S3_BUCKET'] = 'msp-churn-models'
 
-class InvocationRequest(BaseModel):
-    input: Dict[str, Any]
+app = FastAPI()
 
-class InvocationResponse(BaseModel):
-    output: Dict[str, Any]
+predictor = None
 
-@app.post("/invocations", response_model=InvocationResponse)
-async def invoke_agent(request: InvocationRequest):
-    """Main invocation endpoint for the agent"""
+def init_predictor():
+    global predictor
+    if predictor is None:
+        try:
+            from churn_predictor import ChurnPredictor
+            predictor = ChurnPredictor(use_s3=True, s3_bucket='msp-churn-models')
+            print("✅ Predictor loaded")
+        except Exception as e:
+            print(f"Predictor mock mode: {e}")
+            predictor = 'mock'
+
+init_predictor()
+
+@app.post("/invocations")
+async def invoke_agent(body: dict):
     try:
-        user_message = request.input.get("prompt", "")
+        # Extract prompt from various possible formats
+        prompt = ""
+        if "input" in body and isinstance(body["input"], dict):
+            prompt = body["input"].get("prompt", "")
+        elif "prompt" in body:
+            prompt = body.get("prompt", "")
         
-        if not user_message:
-            raise HTTPException(status_code=400, detail="No prompt found")
+        if not prompt:
+            prompt = "Hello"
         
-        result = agent(user_message)
+        # Process with agent
+        from agent_entry import agent_process
+        result = agent_process(prompt, predictor)
         
-        response = {
-            "message": result.message,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "agent": "client-retention-agent"
+        return {
+            "output": {
+                "message": result,
+                "timestamp": datetime.now(timezone.utc).isoformat()
+            }
         }
-        
-        return InvocationResponse(output=response)
-    
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Agent processing failed: {str(e)}")
+        return {
+            "output": {
+                "error": str(e),
+                "message": "Error processing request"
+            }
+        }
 
 @app.get("/ping")
 async def ping():
-    """Health check endpoint"""
-    return {"status": "healthy", "agent": "client-retention-agent"}
-
-@app.get("/")
-async def root():
-    """Root endpoint with API info"""
-    return {
-        "name": "Client Retention Agent API",
-        "version": "1.0.0",
-        "endpoints": {
-            "invocations": "POST /invocations",
-            "health": "GET /ping"
-        }
-    }
+    return {"status": "healthy"}
 
 if __name__ == "__main__":
     import uvicorn

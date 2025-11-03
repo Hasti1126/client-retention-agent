@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - USE_S3_MODELS=true
+      - MODEL_S3_BUCKET=msp-churn-models
+      - AWS_REGION=us-east-2
+    volumes:
+      - ./backend/saved_models:/app/saved_models
+    networks:
+      - churn-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - churn-network
+
+networks:
+  churn-network:
+    driver: bridge
